@@ -8,6 +8,6 @@ urlpatterns = [
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
 
     re_path(r'^about/contact/', views.contact),
-    re_path(r'^about', views.about),
+    path('about', views.about, kwargs={"name":"Tom", "age": 38}),
     path('', views.index),
 ]
