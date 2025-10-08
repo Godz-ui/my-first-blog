@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+Django
+=======
+Django
+>>>>>>> 3f0e557 (My Django app, first commit)
