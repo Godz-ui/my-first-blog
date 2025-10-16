@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidde
 
 
 def index(request, id):
-    people = ["Tom", "Bob", "Sam"]
+    people = ["Tom", "Bob", "Sam",'Dan', 'Jon', 'Arthur', 'Alex']
     # если пользователь найден, возвращаем его
     if id in range(0, len(people)):
         return HttpResponse(people[id])
@@ -42,9 +42,6 @@ def details(request):
 
 
 
-def index(request):
-    return HttpResponse('<h1> Main menu </h1>')
-    # return HttpResponse( 'Hello ', content_type='text/plain', charset='utf-8')
 
 def user(request, name="Undefined", age =0):
     age = request.GET.get('age')
@@ -118,3 +115,8 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
+
+def info_list(request):  #Вшивание другого Html файла "contact_list"
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'blog/info_list.html', {'posts': posts})
