@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <h1>{{ header }}</h1>
+  <div class="info">
+    <p>Имя: {{user.name}} Возраст: {{user.age}}</p>
+    <p>Адрес: улю {{address.0}}, д. {{address.1}}, кв. {{address.2}}</p>
+    <p>Языки: {{langs.0}}, {{langs.1}}, {{langs.2}}</p>
+  </div>
+</body>
+</html>

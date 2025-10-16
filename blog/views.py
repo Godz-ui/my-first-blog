@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .forms import PostForm
 from .models import Post
-from django.shortcuts import redirect
+from django.shortcuts import redirect,render
 
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest, JsonResponse
 
@@ -88,14 +88,27 @@ def new(request):
 def top(request):
     return HttpResponse('Наиболее популярные товары')
 
+# //////////////// КУКИ ///////////////////
+
+# установка куки
+def set(request):
+    # получаем из строки запроса имя пользователя
+    username = request.GET.get("username", "Undefined")
+    response = HttpResponse(f"Hello {username}")
+    # передаем его в куки
+    response.set_cookie("username", username)
+    return response
+
+
+# получение куки
+def get(request):
+    # получаем куки с ключом username
+    username = request.COOKIES["username"]
+    return HttpResponse(f"Hello {username}")
 
 
 
-
-
-
-
-
+# ////////////// HTML файлы ////////////////
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -136,5 +149,13 @@ def post_edit(request, pk):
 
 
 def info_list(request):  #Вшивание другого Html файла "contact_list"
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'blog/info_list.html', {'posts': posts})
+    return render(request, 'blog/info_list.html')
+
+def index_list(request):
+    header = "Данные пользователя"
+    langs = ['JavaScript', 'Python', 'Java']
+    user = {"name": 'Arthur', "age": 38}
+    address = ('Ибраева', 23, 12)
+
+    data = {'header': header, 'langs':langs, 'user':user, 'address': address}
+    return render(request, 'blog/index_list.html', context=data)

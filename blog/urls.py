@@ -12,10 +12,12 @@ product_patterns = [
 
 urlpatterns = [
     path('', views.post_list, name='post_list'),
-    path('info', views.info_list, name='info_list'),
+    path('information', views.info_list, name='info_list'),
     path('post/<int:pk>/', views.post_detail, name='post_detail'),
     path('post/new/', views.post_new, name='post_new'),
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
+
+    path('inf', views.index_list, name='index_list'),
 
     path('index/<str:name>/<int:age>', views.index),
 
@@ -32,4 +34,7 @@ urlpatterns = [
 
     # path("index/<int:id>", views.index),
     path("access/<int:age>", views.access),
+
+    path("set", views.set),
+    path("get", views.get),
 ]
