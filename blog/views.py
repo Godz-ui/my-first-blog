@@ -4,23 +4,83 @@ from .forms import PostForm
 from .models import Post
 from django.shortcuts import redirect
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest
 
 
-def index(request):
-    return HttpResponse("Главная")
+def index(request, id):
+    people = ["Tom", "Bob", "Sam"]
+    # если пользователь найден, возвращаем его
+    if id in range(0, len(people)):
+        return HttpResponse(people[id])
+    # если нет, то возвращаем ошибку 404
+    else:
+        return HttpResponseNotFound("Not Found")
+
+def access(request, age):
+    # если возраст НЕ входит в диапазон 1-110, посылаем ошибку 400
+    if age not in range(1, 111):
+        return HttpResponseBadRequest("Некорректные данные")
+    # если возраст больше 17, то доступ разрешен
+    if(age > 17):
+        return HttpResponse("Доступ разрешен")
+    # если нет, то возвращаем ошибку 403
+    else:
+        return HttpResponseForbidden("Доступ заблокирован: недостаточно лет")
 
 
-def about(request, name, age):
-    return HttpResponse(f"""
-            <h2>О пользователе</h2>
-            <p>Имя: {name}</p>
-            <p>Возраст: {age}</p>
-    """)
+def about(request):
+    return HttpResponse("About")
 
 
 def contact(request):
+    return HttpResponseRedirect("/about")
+
+
+def details(request):
+    return HttpResponsePermanentRedirect("/")
+
+
+
+
+def index(request):
+    return HttpResponse('<h1> Main menu </h1>')
+    # return HttpResponse( 'Hello ', content_type='text/plain', charset='utf-8')
+
+def user(request, name="Undefined", age =0):
+    age = request.GET.get('age')
+    name = request.GET.get('name')
+    return HttpResponse(f"<h2>Имя: {name}  Возраст:{age}</h2>")
+
+def contact(request):
     return HttpResponse("<h1>Контакты</h1>")
+
+
+
+def products(request, id):
+    return HttpResponse(f'Наш список товаров{id}')
+
+def comments(request, id):
+    return HttpResponse(f"Комментарии о товаре {id}")
+
+def questions(request, id):
+    return HttpResponse(f"Вопросы о товаре{id}")
+
+
+
+def new(request):
+    return HttpResponse('Новые товары')
+
+def top(request):
+    return HttpResponse('Наиболее популярные товары')
+
+
+
+
+
+
+
+
+
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
