@@ -4,17 +4,35 @@ from .forms import PostForm
 from .models import Post
 from django.shortcuts import redirect
 
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest, JsonResponse
+
+from django.core.serializers.json import DjangoJSONEncoder
 
 
-def index(request, id):
-    people = ["Tom", "Bob", "Sam",'Dan', 'Jon', 'Arthur', 'Alex']
-    # если пользователь найден, возвращаем его
-    if id in range(0, len(people)):
-        return HttpResponse(people[id])
-    # если нет, то возвращаем ошибку 404
-    else:
-        return HttpResponseNotFound("Not Found")
+def index(request, name, age):
+    bob = Person (name, age)
+    return JsonResponse(bob, safe=False, encoder=PersonEncoder)
+
+
+class Person:
+
+    def __init__(self, name, age):
+        self.name = name  # имя человека
+        self.age = age  # возраст человека
+
+
+class PersonEncoder(DjangoJSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Person):
+            return {"name": obj.name, "age": obj.age}
+            # return obj.__dict__
+        return super().default(obj)
+
+
+
+
+
+
 
 def access(request, age):
     # если возраст НЕ входит в диапазон 1-110, посылаем ошибку 400
